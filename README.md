@@ -35,3 +35,6 @@ pip install -r requirements.txt
 ```bash
 python data_loader.py
 ```
+
+Скрипт скачивает датасет, приводит типы данных и сохраняет результат в
+`data/METABRIC_RNA_Mutation.parquet`.
