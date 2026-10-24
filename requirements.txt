@@ -2,3 +2,6 @@ gdown>=5.2
 pandas>=2.0
 pyarrow>=14
 requests>=2.31
+jupyter>=1.0
+matplotlib>=3.8
+seaborn>=0.13
