@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iud-hws"
+version = "0.1.0"
+description = "ETL для датасета METABRIC"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "gdown>=5.2",
+    "pandas>=2.0",
+    "pyarrow>=14",
+    "sqlalchemy>=2.0",
+    "psycopg2-binary>=2.9",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = [
+    "jupyter>=1.0",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "plotly>=6.3",
+    "kaleido>=1.1",
+    "requests>=2.31",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
