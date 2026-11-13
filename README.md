@@ -35,6 +35,7 @@ iud_hws/
 │   └── EDA.ipynb            исследовательский анализ и графики
 ├── scripts/
 │   ├── read_api.py          сбор данных из openFDA API
+│   ├── read_creds.py        чтение доступов из creds.db в .env
 │   ├── write_to_db.py       запись 100 строк датасета в БД
 │   ├── openfda_preview.png
 │   └── README.md            описание датасета openFDA
@@ -100,13 +101,28 @@ pip сначала обновляется.
 ## Настройка подключения к БД
 
 Данные для подключения хранятся только в файле `.env`, который добавлен в
-`.gitignore`. Шаблон лежит в `.env.example`:
+`.gitignore`. Файл `creds.db` в репозиторий тоже не попадает: все `*.db`
+файлы в `.gitignore`.
+
+Доступы выдаются в виде SQLite-базы `creds.db` с таблицей `access`.
+Скрипт `scripts/read_creds.py` открывает её через `sqlite3`, выбирает
+доступ к нужной БД и записывает его в `.env`. Сами доступы на экран не
+выводятся.
+
+```bash
+python scripts/read_creds.py путь/к/creds.db
+python scripts/read_creds.py путь/к/creds.db --db freezone
+```
+
+По умолчанию берётся доступ к БД `homeworks`.
+
+Можно заполнить `.env` и вручную по шаблону `.env.example`:
 
 ```bash
 cp .env.example .env
 ```
 
-В `.env` нужно заполнить `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` и
+В `.env` должны быть `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` и
 `DB_PASSWORD`.
 
 ## Запуск
@@ -143,5 +159,6 @@ jupyter lab notebooks/EDA.ipynb
 - `scripts/read_api.py` — собирает 100 последних сообщений о нежелательных
   реакциях на лекарства из openFDA API и сохраняет их в
   `data/openfda_events.parquet`. Подробнее в `scripts/README.md`.
+- `scripts/read_creds.py` — читает доступы из `creds.db` и создаёт `.env`.
 - `scripts/write_to_db.py` — записывает первые 100 строк готового Parquet в
   таблицу `travingk`, а затем читает её обратно для проверки.
