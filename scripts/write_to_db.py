@@ -31,7 +31,7 @@ def get_engine():
 
 def write_to_db():
     if not DATA_PATH.exists():
-        raise SystemExit("Нет файла с данными. Сначала запустите: python data_loader.py")
+        raise SystemExit("Нет файла с данными. Сначала запустите: python -m etl.main")
 
     data = pd.read_parquet(DATA_PATH).head(ROWS_LIMIT)
     engine = get_engine()
