@@ -1,14 +1,15 @@
 import argparse
 
+from etl.config import DEFAULT_TABLE, MAX_ROWS, ROOT
 from etl.extract import extract
-from etl.load import MAX_ROWS, load_to_db, save_parquet
+from etl.load import check_target, load_to_db, save_parquet
 from etl.transform import transform
 from etl.validate import validate
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="ETL для датасета METABRIC")
-    parser.add_argument("--table", default="travingk", help="имя таблицы в БД")
+    parser.add_argument("--table", default=DEFAULT_TABLE, help="имя таблицы в БД")
     parser.add_argument(
         "--rows",
         type=int,
@@ -16,8 +17,10 @@ def parse_args():
         help=f"сколько строк записать в БД, от 1 до {MAX_ROWS}",
     )
     args = parser.parse_args()
-    if not 1 <= args.rows <= MAX_ROWS:
-        parser.error(f"--rows должен быть от 1 до {MAX_ROWS}")
+    try:
+        check_target(args.table, args.rows)
+    except ValueError as error:
+        parser.error(str(error))
     return args
 
 
@@ -34,7 +37,7 @@ def main():
     print("Validate: проверки пройдены")
 
     path = save_parquet(data)
-    print(f"Load: полный датасет сохранён в {path}")
+    print(f"Load: полный датасет сохранён в {path.relative_to(ROOT)}")
 
     count = load_to_db(data, args.table, args.rows)
     print(f"Load: в таблицу {args.table} записано {count} строк")

@@ -22,11 +22,7 @@ def transform(data):
 
     mutation_columns = [column for column in data.columns if column.endswith("_mut")]
     data[mutation_columns] = (
-        data[mutation_columns]
-        .fillna("0")
-        .astype("string")
-        .ne("0")
-        .astype("boolean")
+        data[mutation_columns].astype("string").ne("0").astype("boolean")
     )
 
     text_columns = data.select_dtypes(include=["object", "string"]).columns
