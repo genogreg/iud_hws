@@ -5,3 +5,5 @@ requests>=2.31
 jupyter>=1.0
 matplotlib>=3.8
 seaborn>=0.13
+plotly>=6.3
+kaleido>=1.1
